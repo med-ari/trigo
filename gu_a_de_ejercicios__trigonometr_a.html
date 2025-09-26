@@ -1,0 +1,1144 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Ejercicios: Trigonometría</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true
+        },
+        svg: {
+          fontCache: 'global'
+        },
+        chtml: {
+          displayAlign: 'left'
+        }
+      };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5; --primary-dark: #4338ca; --primary-light: #eef2ff;
+            --secondary-color: #64748b; --success-color: #10b981; --success-light: #ecfdf5;
+            --danger-color: #ef4444; --danger-light: #fef2f2; --warning-color: #f59e0b;
+            --light-bg: #f1f5f9; --border-color: #cbd5e1; --text-color: #1e293b;
+            --white: #ffffff; --progress-color-start: #4f46e5; --progress-color-end: #10b981;
+        }
+        @keyframes moveGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        body {
+            font-family: 'Inter', sans-serif; display: flex; justify-content: center;
+            align-items: flex-start; min-height: 100vh;
+            background: linear-gradient(-45deg, #6d28d9, #4f46e5, #d946ef, #10b981);
+            background-size: 400% 400%; animation: moveGradient 20s ease infinite;
+            margin: 0; padding: 2em 1em;
+        }
+        .main-wrapper { width: 100%; max-width: 900px; position: relative; }
+        .card { background: var(--white); padding: 2.5em; border-radius: 16px; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15); animation: fadeIn 0.5s ease-out; }
+        .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        #category-selection-screen h2 { font-size: 2em; color: var(--primary-color); text-align: center; margin-top: 0; margin-bottom: 0.5em; }
+        #category-selection-screen .subtitle { text-align: center; color: var(--secondary-color); margin-bottom: 2em; font-size: 1.1em; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        #category-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5em; margin-bottom: 2.5em; }
+        .category-item { background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px; padding: 1.5em; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .category-item:hover:not(.completed) { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(79,70,229,0.1); border-color: var(--primary-color); }
+        .category-item h3 { margin: 0 0 0.5em 0; color: var(--primary-dark); font-size: 1.25em; }
+        .category-item p { margin: 0; color: var(--secondary-color); font-size: 0.95em; line-height: 1.5; }
+        .category-item.completed { border-color: var(--success-color); background-color: var(--success-light); cursor: default; }
+        .category-item.completed:hover { transform: none; box-shadow: none; }
+        .category-item.completed::before { content: '✔'; font-weight: bold; position: absolute; top: 1em; right: 1.2em; color: var(--success-color); font-size: 1.5em; }
+        .category-item .progress-info { margin-top: 1em; font-weight: bold; color: var(--success-color); }
+        #overall-progress-container { margin-top: 2em; text-align: center; border-top: 1px solid var(--border-color); padding-top: 2em;}
+        #overall-progress-container h3 { margin: 0 0 0.5em 0; color: var(--text-color); }
+        #overall-score { font-size: 1.2em; color: var(--secondary-color); }
+        #show-final-results-btn { padding: 12px 30px; font-size: 1em; font-weight: bold; color: var(--white); background-color: var(--success-color); border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s; margin-top: 1em; }
+        #show-final-results-btn:hover { background-color: #059669; }
+
+        /* --- New Summary Card Styles --- */
+        #summary-container h2 { font-size: 1.8em; margin-top: 0; margin-bottom: 0.2em; color: var(--primary-color); }
+        #summary-container .subtitle { color: var(--secondary-color); margin-top: 0; margin-bottom: 2em; }
+        .summary-section { margin-bottom: 2.5em; }
+        .summary-section h3 { font-size: 1.2em; font-weight: 700; color: var(--text-color); margin-bottom: 1em; padding-bottom: 0.5em; border-bottom: 2px solid var(--primary-light); display: flex; align-items: center; gap: 0.75em; }
+        .summary-key-concepts { line-height: 1.7; color: #374151; }
+        .summary-key-concepts p, .summary-key-concepts ul, .summary-key-concepts ol { margin-bottom: 1em; }
+        .summary-key-concepts ul, .summary-key-concepts ol { padding-left: 20px; }
+        .summary-key-concepts strong { color: var(--primary-dark); }
+        .summary-key-concepts mjx-container[display="true"] { background-color: rgba(79, 70, 229, 0.05); padding: 1em; border-radius: 8px; margin: 1em 0; }
+        .summary-tips-list { list-style: none; padding: 0; }
+        .summary-tips-list li { display: flex; align-items: flex-start; gap: 1em; margin-bottom: 1em; background-color: var(--primary-light); padding: 1em; border-radius: 8px; }
+        .summary-tips-list li::before { content: '💡'; font-size: 1.2em; line-height: 1.5; }
+        #summary-continue-btn { padding: 12px 30px; font-size: 1em; font-weight: bold; color: var(--white); background-color: var(--primary-color); border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; display: block; width: 100%; }
+        #summary-continue-btn:hover { background-color: var(--primary-dark); transform: scale(1.02); }
+
+        /* --- Main Quiz & Final Screen Styles --- */
+        #quiz-header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5em; }
+        #problem-header { color: var(--text-color); font-weight: 600; font-size: 1.1em; }
+        #score-counter { color: var(--success-color); font-weight: 600; font-size: 1em; background-color: var(--success-light); padding: 5px 10px; border-radius: 8px; }
+        #progress-container { width: 100%; background-color: #e2e8f0; border-radius: 10px; margin-bottom: 1.5em; height: 12px; overflow: hidden; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--progress-color-start), var(--progress-color-end)); border-radius: 10px; transition: width 0.6s cubic-bezier(0.4, 0.0, 0.2, 1); }
+        #question-container { font-size: 1.15em; line-height: 1.7; margin: 1em 0; color: var(--text-color); text-align: justify; }
+        #question-container table { width: 100%; border-collapse: collapse; margin: 1em 0; }
+        #question-container th, #question-container td { border: 1px solid var(--border-color); padding: 12px; text-align: center; }
+        #question-container th { background-color: var(--light-bg); font-weight: 600; }
+        #graph-container, .option-graph-canvas-container { width: 100%; max-width: 450px; margin: 1.5em auto; border-radius: 8px; overflow: hidden; }
+        #graph-container svg, #graph-container img, .option-graph-canvas-container svg, .option-graph-canvas-container img {max-width: 100%; height: auto; display: block; margin: 0 auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);}
+        #options-container { margin-top: 1.5em; display: flex; flex-direction: column; gap: 0.75em; }
+        .option-button { display: flex; align-items: center; gap: 1em; width: 100%; padding: 14px 18px; font-size: 1.05em; text-align: left; background-color: var(--white); border: 2px solid var(--border-color); border-radius: 12px; cursor: pointer; transition: all 0.2s ease-in-out; }
+        .option-button:hover:not(.disabled) { border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .option-button .label { font-weight: bold; color: var(--primary-color); }
+        .option-button .value { flex-grow: 1; }
+        .option-button.correct { border-color: var(--success-color); background-color: var(--success-light); }
+        .option-button.correct .label { color: var(--success-color); }
+        .option-button.incorrect { border-color: var(--danger-color); background-color: var(--danger-light); }
+        .option-button.incorrect .label { color: var(--danger-color); }
+        .option-button.disabled { cursor: not-allowed; }
+        .options-grid-with-graphs { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; }
+        .option-block-graph { padding: 1em; border: 2px solid var(--border-color); border-radius: 12px; cursor: pointer; transition: all 0.2s ease-in-out; background-color: var(--white); }
+        .option-block-graph:hover:not(.disabled) { border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .option-block-graph.correct { border-color: var(--success-color)!important; background-color: var(--success-light); }
+        .option-block-graph.incorrect { border-color: var(--danger-color)!important; background-color: var(--danger-light); }
+        .option-block-graph .label { font-size: 1.2em; font-weight: bold; margin-bottom: 0.5em; color: var(--primary-color); }
+        
+        #hints-container { margin-top: 1.5em; border-top: 1px dashed var(--border-color); padding-top: 1.5em; display: flex; flex-direction: column; gap: 0.5em; }
+        .hint-button { width: 100%; padding: 10px; background-color: var(--primary-light); border: 1px solid var(--primary-color); color: var(--primary-dark); border-radius: 8px; cursor: pointer; transition: background-color 0.2s; font-weight: 500; }
+        .hint-button:hover { background-color: #dbeafe; }
+        .hint-button:disabled { background-color: #e5e7eb; border-color: var(--border-color); color: var(--secondary-color); cursor: not-allowed; }
+        .hint-content { padding: 12px; background-color: #f3f4f6; border-radius: 8px; font-size: 0.95em; color: var(--text-color); animation: fadeIn 0.3s; }
+
+        #feedback-container { margin-top: 1.5em; padding: 1.2em; border-radius: 12px; display: none; animation: slideDownFade 0.4s ease-out; line-height: 1.7; text-align: justify; }
+        #feedback-container.correct { background-color: var(--success-light); border-left: 5px solid var(--success-color); }
+        #feedback-container.incorrect { background-color: var(--danger-light); border-left: 5px solid var(--danger-color); }
+        #feedback-title { display: flex; align-items: center; font-size: 1.2em; font-weight: 700; margin-bottom: 0.5em; }
+        #feedback-title svg { width: 24px; height: 24px; margin-right: 8px; }
+        #feedback-container.correct #feedback-title { color: var(--success-color); }
+        #feedback-container.incorrect #feedback-title { color: var(--danger-color); }
+        #navigation-container { display: flex; justify-content: flex-end; margin-top: 2em; }
+        #next-button, .nav-btn { padding: 12px 30px; font-size: 1em; font-weight: bold; color: var(--white); background-color: var(--primary-color); border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        #next-button { visibility: hidden; opacity: 0; }
+        #next-button.visible { visibility: visible; opacity: 1; }
+        #next-button:hover, .nav-btn:hover { background-color: var(--primary-dark); }
+        #final-screen { text-align: center; animation: fadeIn 0.5s ease-out; }
+        #final-screen h2 { font-size: 2.2em; color: var(--primary-color); font-weight: 700; }
+        #final-screen p { font-size: 1.2em; }
+        .highlight { color: var(--primary-color); font-weight: 700; }
+        @media (max-width: 680px) { .options-grid-with-graphs { grid-template-columns: 1fr; } #category-list { grid-template-columns: 1fr; }}
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div id="category-selection-screen" class="card">
+            <h2>Guía de Ejercicios: Trigonometría</h2>
+            <p class="subtitle">Selecciona un tema para comenzar. Cada sección se enfoca en una habilidad clave. ¡Completa todas las secciones para demostrar tu maestría!</p>
+            <ul id="category-list"></ul>
+            <div id="overall-progress-container" class="hidden">
+                <h3>Progreso General</h3>
+                <p id="overall-score"></p>
+                <button id="show-final-results-btn" class="nav-btn hidden">Ver Resumen Final</button>
+            </div>
+        </div>
+
+        <div id="quiz-wrapper" class="hidden">
+            <div id="summary-container" class="card hidden">
+                <h2 id="summary-title"></h2>
+                <p class="subtitle">Prepárate para la siguiente sección.</p>
+
+                <div class="summary-section">
+                    <h3>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open" style="color: var(--primary-dark);"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                      Conceptos Clave y Fórmulas
+                    </h3>
+                    <div id="summary-key-concepts" class="summary-key-concepts"></div>
+                </div>
+                
+                <div class="summary-section">
+                    <h3>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap" style="color: var(--warning-color);"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                      Consejos para esta Sección
+                    </h3>
+                    <ul id="summary-tips-list" class="summary-tips-list"></ul>
+                </div>
+                
+                <button id="summary-continue-btn">Comenzar Problemas</button>
+            </div>
+
+            <div id="quiz-container" class="hidden card">
+                <div id="progress-container"><div id="progress-bar"></div></div>
+                <div id="quiz-header-bar">
+                    <div id="problem-header"></div>
+                    <div id="score-counter"></div>
+                </div>
+                <div id="question-container"></div>
+                <div id="graph-container"></div>
+                <div id="options-container"></div>
+                <div id="hints-container"></div>
+                <div id="feedback-container"></div>
+                <div id="navigation-container"><button id="next-button">Siguiente →</button></div>
+            </div>
+
+            <div id="final-screen" class="hidden card">
+                <h2 id="final-title"></h2>
+                <p id="final-message"></p>
+                <p id="final-score" style="font-size: 2.5em; font-weight: bold; margin: 0.5em 0;"></p>
+                <p id="final-percentage" style="font-size: 1.5em;"></p>
+                <button id="back-to-menu-btn" class="nav-btn">Volver al Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function renderMath() {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        setTimeout(() => window.MathJax.typesetPromise(), 0);
+      }
+    }
+
+    function renderDiagram(diagram) {
+        if (!diagram) return '';
+        if (diagram.type === 'raster') {
+            return `<img src="${diagram.src}" alt="Diagrama" style="max-width: 100%; height: auto; display: block; margin: 0 auto; background: white; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1;" />`;
+        }
+        return '';
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        const icons = {
+            check: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>`,
+            x: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`
+        };
+        const summaries = {
+  "ai-cat-1758490573501-0": {
+    "title": "Nivel Básico",
+    "key_concepts_html": "<p>En este nivel, el objetivo es consolidar las definiciones fundamentales de las razones trigonométricas en triángulos rectángulos y la aplicación del Teorema de Pitágoras.</p><ul><li>Un <strong>Triángulo Rectángulo</strong> es aquel que posee un ángulo de 90°. Los lados que forman el ángulo recto se denominan <strong>catetos</strong>, y el lado opuesto al ángulo recto es la <strong>hipotenusa</strong>.</li><li>Las <strong>Razones Trigonométricas</strong> para un ángulo agudo \\(\\alpha\\) en un triángulo rectángulo se definen como:<ul><li><strong>Seno:</strong> \\(\\sin(\\alpha) = \\frac{\\text{Cateto Opuesto}}{\\text{Hipotenusa}}\\)</li><li><strong>Coseno:</strong> \\(\\cos(\\alpha) = \\frac{\\text{Cateto Adyacente}}{\\text{Hipotenusa}}\\)</li><li><strong>Tangente:</strong> \\(\\tan(\\alpha) = \\frac{\\text{Cateto Opuesto}}{\\text{Cateto Adyacente}}\\)</li></ul></li><li>El <strong>Teorema de Pitágoras</strong> establece que, en un triángulo rectángulo, la suma de los cuadrados de los catetos es igual al cuadrado de la hipotenusa: \\(a^2 + b^2 = c^2\\).</li></ul>",
+    "tips": [
+      "Presta atención a los detalles en los enunciados y diagramas.",
+      "Recuerda revisar las fórmulas y conceptos clave relacionados antes de empezar.",
+      "Usa la explicación para entender tus errores y reforzar tu aprendizaje.",
+      "¡Mucha suerte en esta sección!"
+    ]
+  },
+  "ai-cat-1758490573501-1": {
+    "title": "Nivel Intermedio",
+    "key_concepts_html": "<p>Este nivel se enfoca en la aplicación de las identidades trigonométricas fundamentales y el manejo de los valores de las razones trigonométricas para ángulos especiales.</p><ul><li>La <strong>Identidad Pitagórica Fundamental</strong> es crucial: Para cualquier ángulo \\(\\alpha\\), se cumple que \\(\\sin^2(\\alpha) + \\cos^2(\\alpha) = 1\\).</li><li>Es esencial conocer los valores de las <strong>Razones Trigonométricas para Ángulos Especiales</strong>:<table><thead><tr><th>Ángulo</th><th>\\(\\sin(\\theta)\\)</th><th>\\(\\cos(\\theta)\\)</th><th>\\(\\tan(\\theta)\\)</th></tr></thead><tbody><tr><td>30°</td><td>\\(\\frac{1}{2}\\)</td><td>\\(\\frac{\\sqrt{3}}{2}\\)</td><td>\\(\\frac{\\sqrt{3}}{3}\\)</td></tr><tr><td>45°</td><td>\\(\\frac{\\sqrt{2}}{2}\\)</td><td>\\(\\frac{\\sqrt{2}}{2}\\)</td><td>1</td></tr><tr><td>60°</td><td>\\(\\frac{\\sqrt{3}}{2}\\)</td><td>\\(\\frac{1}{2}\\)</td><td>\\(\\sqrt{3}\\)</td></tr></tbody></table></li><li>La <strong>Relación entre Seno y Coseno de Ángulos Complementarios</strong> establece que si \\(\\alpha + \\beta = 90°\\), entonces \\(\\sin(\\alpha) = \\cos(\\beta)\\) y \\(\\cos(\\alpha) = \\sin(\\beta)\\).</li></ul>",
+    "tips": [
+      "Presta atención a los detalles en los enunciados y diagramas.",
+      "Recuerda revisar las fórmulas y conceptos clave relacionados antes de empezar.",
+      "Usa la explicación para entender tus errores y reforzar tu aprendizaje.",
+      "¡Mucha suerte en esta sección!"
+    ]
+  },
+  "ai-cat-1758490573501-2": {
+    "title": "Nivel Avanzado",
+    "key_concepts_html": "<p>En este nivel, aplicarás la trigonometría para resolver problemas contextualizados, construyendo modelos matemáticos a partir de situaciones reales.</p><ul><li>Un <strong>Ángulo de Elevación</strong> se forma entre la línea horizontal y la línea de visión cuando un observador mira un objeto que está <strong>por encima</strong> de su posición.</li><li>Un <strong>Ángulo de Depresión</strong> se forma entre la línea horizontal y la línea de visión cuando un observador mira un objeto que está <strong>por debajo</strong> de su posición.</li><li>La <strong>Resolución de Problemas</strong> en este contexto implica:<ul><li>Leer cuidadosamente el enunciado y visualizar la situación.</li><li>Dibujar un diagrama que represente la situación, identificando el triángulo(s) rectángulo(s).</li><li>Etiquetar los lados conocidos y desconocidos, así como los ángulos.</li><li>Aplicar las razones trigonométricas adecuadas para establecer ecuaciones y resolver las incógnitas.</li></ul></li></ul>",
+    "tips": [
+      "Presta atención a los detalles en los enunciados y diagramas.",
+      "Recuerda revisar las fórmulas y conceptos clave relacionados antes de empezar.",
+      "Usa la explicación para entender tus errores y reforzar tu aprendizaje.",
+      "¡Mucha suerte en esta sección!"
+    ]
+  },
+  "ai-cat-1758490573501-3": {
+    "title": "Nivel Experto",
+    "key_concepts_html": "<p>Los problemas de este nivel requieren una síntesis de múltiples conceptos trigonométricos, un mayor nivel de abstracción y la habilidad para analizar escenarios geométricos complejos.</p><ul><li>La <strong>Trigonometría en el Círculo Unitario</strong> es fundamental: Para un punto \\((x, y)\\) en una circunferencia de radio \\(r\\) que forma un ángulo \\(\\theta\\) con el eje x positivo, sus coordenadas se definen como \\(x = r \\cos(\\theta)\\) y \\(y = r \\sin(\\theta)\\).</li><li>Las <strong>Identidades de Ángulo Doble</strong> pueden ser útiles en ciertos contextos, por ejemplo: \\(\\cos(2\\omega) = \\cos^2(\\omega) - \\sin^2(\\omega)\\).</li><li>La <strong>Resolución de Sistemas de Ecuaciones Trigonométricas</strong> puede ser necesaria cuando hay múltiples incógnitas o relaciones entre ángulos.</li><li>El <strong>Análisis Abstracto</strong> implica trabajar con variables y expresiones generales, en lugar de solo valores numéricos, para derivar soluciones.</li></ul>",
+    "tips": [
+      "Presta atención a los detalles en los enunciados y diagramas.",
+      "Recuerda revisar las fórmulas y conceptos clave relacionados antes de empezar.",
+      "Usa la explicación para entender tus errores y reforzar tu aprendizaje.",
+      "¡Mucha suerte en esta sección!"
+    ]
+  }
+};
+        const allProblemsData = [
+  {
+    "text": "En la figura, el triángulo ABC es rectángulo en B. El cateto AB mide 12 y el cateto BC mide 5. El ángulo en el vértice C se denomina \\(\\gamma\\). Entonces ¿cuál es el valor del coseno de \\(\\gamma\\)?",
+    "options": [
+      {
+        "text": "\\(\\frac{5}{13}\\)"
+      },
+      {
+        "text": "\\(\\frac{5}{12}\\)"
+      },
+      {
+        "text": "\\(\\frac{12}{13}\\)"
+      },
+      {
+        "text": "\\(\\frac{4}{12}\\)"
+      },
+      {
+        "text": "\\(\\frac{12}{5}\\)"
+      }
+    ],
+    "correct": 0,
+    "explanation": "Primero, se calcula la longitud de la hipotenusa (AC) usando el Teorema de Pitágoras: \\(AC = \\sqrt{AB^2 + BC^2} = \\sqrt{12^2 + 5^2} = \\sqrt{144 + 25} = \\sqrt{169} = 13\\). Luego, el coseno del ángulo \\(\\gamma\\) se define como el cateto adyacente (BC) dividido por la hipotenusa (AC): \\(\\cos(\\gamma) = \\frac{BC}{AC} = \\frac{5}{13}\\).",
+    "hints": [
+      "¿Cuál es la definición del coseno de un ángulo agudo en un triángulo rectángulo?",
+      "Para aplicar la definición del coseno, necesitas conocer la longitud de la hipotenusa. ¿Cómo puedes calcularla a partir de los dos catetos dados?",
+      "Una vez que hayas calculado la hipotenusa (que es 13), identifica el cateto adyacente al ángulo \\(\\gamma\\) y aplica la fórmula del coseno."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "1",
+    "internalId": "q-1758490573501-0.410770802000897",
+    "diagram": {
+      "type": "raster",
+      "src": "images/1758491807114-fjv4jfi5tkp-Screenshot_20250921_184324.png",
+      "filename": "Screenshot_20250921_184324.png"
+    },
+    "id": "q-ai-cat-1758490573501-0-0"
+  },
+  {
+    "text": "Si \\(\\alpha\\) y \\(\\beta\\) son ángulos no rectos de un triángulo rectángulo y \\(\\tan(\\beta) = \\frac{3}{4}\\), entonces, ¿cuál es el valor de la \\(\\tan(\\alpha)\\)?",
+    "options": [
+      {
+        "text": "\\(\\frac{4}{3}\\)"
+      },
+      {
+        "text": "\\(\\frac{4}{5}\\)"
+      },
+      {
+        "text": "\\(\\frac{3}{5}\\)"
+      },
+      {
+        "text": "\\(\\frac{3}{4}\\)"
+      },
+      {
+        "text": "\\(\\frac{5}{4}\\)"
+      }
+    ],
+    "correct": 0,
+    "explanation": "En un triángulo rectángulo, los dos ángulos agudos \\(\\alpha\\) y \\(\\beta\\) son complementarios, lo que significa que \\(\\alpha + \\beta = 90°\\). Esto implica que el cateto opuesto a \\(\\beta\\) es el cateto adyacente a \\(\\alpha\\), y viceversa. Si \\(\\tan(\\beta) = \\frac{\\text{Opuesto de } \\beta}{\\text{Adyacente a } \\beta} = \\frac{3}{4}\\), entonces para el ángulo \\(\\alpha\\), el cateto opuesto es 4 y el cateto adyacente es 3. Por lo tanto, \\(\\tan(\\alpha) = \\frac{4}{3}\\).",
+    "hints": [
+      "¿Cómo se relacionan los catetos de un triángulo rectángulo con los ángulos agudos \\(\\alpha\\) y \\(\\beta\\)?",
+      "Si \\(\\tan(\\beta) = \\frac{3}{4}\\), puedes imaginar un triángulo donde el cateto opuesto a \\(\\beta\\) es 3 y el adyacente es 4. Ahora, considera el ángulo \\(\\alpha\\).",
+      "Para \\(\\alpha\\), el cateto que era adyacente a \\(\\beta\\) ahora es el opuesto, y el que era opuesto a \\(\\beta\\) ahora es el adyacente. Revisa la definición de \\(\\tan(\\alpha)\\)."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "2",
+    "internalId": "q-1758490573501-0.12098398891341788",
+    "id": "q-ai-cat-1758490573501-0-1"
+  },
+  {
+    "text": "Dado el triángulo ABC rectángulo de la figura en B, cuyos lados AB = c, AC = b y BC = a. ¿Cuál es el valor de \\(\\sin \\alpha + 3 \\tan \\alpha\\)?",
+    "options": [
+      {
+        "text": "\\(\\frac{4a}{bc}\\)"
+      },
+      {
+        "text": "\\(\\frac{ac+3ab}{bc}\\)"
+      },
+      {
+        "text": "\\(\\frac{ac+3ab}{b+c}\\)"
+      },
+      {
+        "text": "\\(\\frac{ab+3ac}{bc}\\)"
+      }
+    ],
+    "correct": 1,
+    "explanation": "En el triángulo dado, el cateto opuesto a \\(\\alpha\\) es \\(a\\), el cateto adyacente es \\(c\\), y la hipotenusa es \\(b\\). Por lo tanto, \\(\\sin \\alpha = \\frac{a}{b}\\) y \\(\\tan \\alpha = \\frac{a}{c}\\). Sustituyendo en la expresión: \\(\\sin \\alpha + 3 \\tan \\alpha = \\frac{a}{b} + 3\\frac{a}{c}\\). Para sumar estas fracciones, encontramos un denominador común, \\(bc\\): \\(\\frac{a \\cdot c}{b \\cdot c} + \\frac{3a \\cdot b}{c \\cdot b} = \\frac{ac + 3ab}{bc}\\).",
+    "hints": [
+      "Identifica el cateto opuesto, el cateto adyacente y la hipotenusa con respecto al ángulo \\(\\alpha\\) en la figura.",
+      "Escribe las expresiones para \\(\\sin \\alpha\\) y \\(\\tan \\alpha\\) en términos de los lados \\(a, b, c\\).",
+      "Sustituye estas expresiones en \\(\\sin \\alpha + 3 \\tan \\alpha\\) y realiza la suma de fracciones buscando un denominador común."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "3",
+    "internalId": "q-1758490573501-0.7123209412403778",
+    "diagram": {
+      "type": "raster",
+      "src": "images/1758491807114-7fy4d6s5lii-Screenshot_20250921_184651.png",
+      "filename": "Screenshot_20250921_184651.png"
+    },
+    "id": "q-ai-cat-1758490573501-0-2"
+  },
+  {
+    "text": "La figura adjunta corresponde a un triángulo rectángulo de vértices ACB e hipotenusa CB. El ángulo en C es de 35°. ¿Cuál de las siguientes relaciones trigonométricas es incorrecta?",
+    "options": [
+      {
+        "text": "\\(\\cos 35° = \\frac{AC}{CB}\\)"
+      },
+      {
+        "text": "\\(\\cos 55° = \\frac{BA}{CB}\\)"
+      },
+      {
+        "text": "\\(\\tan 55° = \\frac{AC}{BA}\\)"
+      },
+      {
+        "text": "\\(\\sin 35° = \\frac{BA}{CB}\\)"
+      },
+      {
+        "text": "\\(\\tan 35° = \\frac{\\frac{BA}{CB}}{\\frac{AC}{BA}}\\)"
+      }
+    ],
+    "correct": 4,
+    "explanation": "Dado que el triángulo es rectángulo en A y el ángulo en C es de 35°, el ángulo en B debe ser \\(90° - 35° = 55°\\). Evaluemos cada opción: A) \\(\\cos 35° = \\frac{\\text{adyacente}}{\\text{hipotenusa}} = \\frac{AC}{CB}\\) (Correcto). B) \\(\\cos 55° = \\frac{\\text{adyacente}}{\\text{hipotenusa}} = \\frac{BA}{CB}\\) (Correcto). C) \\(\\tan 55° = \\frac{\\text{opuesto}}{\\text{adyacente}} = \\frac{AC}{BA}\\) (Correcto). D) \\(\\sin 35° = \\frac{\\text{opuesto}}{\\text{hipotenusa}} = \\frac{BA}{CB}\\) (Correcto). E) \\(\\tan 35° = \\frac{\\text{opuesto}}{\\text{adyacente}} = \\frac{BA}{AC}\\). La opción dada es \\(\\frac{AC}{BA}\\), que corresponde a \\(\\cot 35°\\). Por lo tanto, la relación E es incorrecta.",
+    "hints": [
+      "Identifica el ángulo recto y calcula el tercer ángulo agudo del triángulo.",
+      "Para cada opción, aplica la definición de la razón trigonométrica (seno, coseno o tangente) al ángulo indicado y los lados correspondientes (opuesto, adyacente, hipotenusa).",
+      "Compara la expresión que obtienes con la que se presenta en la opción. La opción incorrecta será aquella donde no coincidan."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "4",
+    "internalId": "q-1758490573501-0.8408952344749974",
+    "diagram": {
+      "type": "raster",
+      "src": "images/1758491807114-mtqkvtibz6d-Screenshot_20250921_184956.png",
+      "filename": "Screenshot_20250921_184956.png"
+    },
+    "id": "q-ai-cat-1758490573501-0-3"
+  },
+  {
+    "text": "Si \\(\\tan(\\alpha) = 1\\), entonces ¿cuál es el valor del \\(\\sin(\\alpha)\\)?",
+    "options": [
+      {
+        "text": "\\(\\sqrt{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{\\sqrt{2}}{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{\\sqrt{3}}{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{1}{2}\\)"
+      },
+      {
+        "text": "1"
+      }
+    ],
+    "correct": 1,
+    "explanation": "Si \\(\\tan(\\alpha) = 1\\), esto implica que el ángulo \\(\\alpha\\) es \\(45°\\), ya que la tangente es 1 solo para ese ángulo especial. Conociendo \\(\\alpha = 45°\\), el valor de \\(\\sin(45°)\\) es \\(\\frac{\\sqrt{2}}{2}\\). Alternativamente, si \\(\\tan(\\alpha) = 1\\), se puede dibujar un triángulo rectángulo con catetos de longitud 1. Por el Teorema de Pitágoras, la hipotenusa sería \\(\\sqrt{1^2 + 1^2} = \\sqrt{2}\\). Entonces \\(\\sin(\\alpha) = \\frac{\\text{opuesto}}{\\text{hipotenusa}} = \\frac{1}{\\sqrt{2}} = \\frac{\\sqrt{2}}{2}\\).",
+    "hints": [
+      "¿Para qué ángulo especial la razón trigonométrica tangente tiene un valor de 1?",
+      "Una vez que identifiques el ángulo, recuerda o busca el valor del seno para ese ángulo especial.",
+      "Si no recuerdas el ángulo, puedes dibujar un triángulo rectángulo donde el cateto opuesto y el adyacente son iguales. Calcula la hipotenusa y luego el seno."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "5",
+    "internalId": "q-1758490573501-0.42485178322662487",
+    "id": "q-ai-cat-1758490573501-1-0"
+  },
+  {
+    "text": "Si \\(0 < \\alpha, \\beta < 90°\\) pertenecen a un triángulo rectángulo y \\(\\cos(\\alpha) = \\frac{1}{2}\\), entonces ¿cuál es el valor del \\(\\sin(\\beta)\\)?",
+    "options": [
+      {
+        "text": "\\(\\frac{\\sqrt{2}}{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{\\sqrt{3}}{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{1}{2}\\)"
+      },
+      {
+        "text": "\\(\\frac{1}{\\sqrt{2}}\\)"
+      },
+      {
+        "text": "1"
+      }
+    ],
+    "correct": 2,
+    "explanation": "En un triángulo rectángulo, los ángulos agudos \\(\\alpha\\) y \\(\\beta\\) son complementarios, lo que significa que \\(\\alpha + \\beta = 90°\\). Por las identidades de ángulos complementarios, se sabe que \\(\\sin(\\beta) = \\cos(\\alpha)\\). Dado que \\(\\cos(\\alpha) = \\frac{1}{2}\\), entonces \\(\\sin(\\beta)\\) también es \\(\\frac{1}{2}\\).",
+    "hints": [
+      "¿Qué relación existe entre los dos ángulos agudos de un triángulo rectángulo?",
+      "Existe una identidad trigonométrica que relaciona el seno de un ángulo con el coseno de su complemento. ¿Cuál es?",
+      "Si \\(\\cos(\\alpha) = \\frac{1}{2}\\), ¿cuánto mide el ángulo \\(\\alpha\\)? Y si \\(\\alpha + \\beta = 90°\\), ¿cuánto mide \\(\\beta\\)? Luego calcula \\(\\sin(\\beta)\\)."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "6",
+    "internalId": "q-1758490573501-0.06078240789747369",
+    "id": "q-ai-cat-1758490573501-1-1"
+  },
+  {
+    "text": "En el triángulo ABC rectángulo en B de la figura adjunta, si \\(\\cos \\alpha = \\frac{3}{5}\\) y AC = 8 cm, ¿Cuál es el valor de BC?<p><strong>Figura:</strong> Un triángulo rectángulo ABC, con ángulo recto en B. El ángulo en A es \\(\\alpha\\). La hipotenusa AC mide 8.</p>",
+    "options": [
+      {
+        "text": "6,0 cm"
+      },
+      {
+        "text": "6,2 cm"
+      },
+      {
+        "text": "6,4 cm"
+      },
+      {
+        "text": "6,6 cm"
+      },
+      {
+        "text": "6,8 cm"
+      }
+    ],
+    "correct": 2,
+    "explanation": "Sabemos que \\(\\cos \\alpha = \\frac{\\text{Cateto Adyacente}}{\\text{Hipotenusa}} = \\frac{AB}{AC}\\). Dado que \\(\\cos \\alpha = \\frac{3}{5}\\) y \\(AC = 8\\) cm, podemos encontrar \\(AB\\): \\(\\frac{3}{5} = \\frac{AB}{8} \\Rightarrow AB = \\frac{3 \\cdot 8}{5} = \\frac{24}{5} = 4.8\\) cm. Ahora, usando el Teorema de Pitágoras: \\(AB^2 + BC^2 = AC^2 \\Rightarrow (4.8)^2 + BC^2 = 8^2 \\Rightarrow 23.04 + BC^2 = 64 \\Rightarrow BC^2 = 64 - 23.04 = 40.96\\). Finalmente, \\(BC = \\sqrt{40.96} = 6.4\\) cm.",
+    "hints": [
+      "Usa la definición de \\(\\cos \\alpha\\) y la longitud de la hipotenusa para calcular la longitud del cateto adyacente \\(AB\\).",
+      "Una vez que tengas la longitud de \\(AB\\) y \\(AC\\), ¿qué teorema puedes usar para encontrar la longitud del cateto \\(BC\\)?",
+      "Alternativamente, usa la identidad \\(\\sin^2 \\alpha + \\cos^2 \\alpha = 1\\) para encontrar \\(\\sin \\alpha\\). Luego, utiliza \\(\\sin \\alpha = \\frac{BC}{AC}\\) para despejar \\(BC\\)."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "7",
+    "internalId": "q-1758490573501-0.6991403845960614",
+    "diagram": {
+      "type": "raster",
+      "src": "images/1758491807114-x9tu9zn3r2r-Screenshot_20250921_185256.png",
+      "filename": "Screenshot_20250921_185256.png"
+    },
+    "id": "q-ai-cat-1758490573501-1-2"
+  },
+  {
+    "text": "En un sorteo, Hugo, Paco y Luis han obtenido las siguientes expresiones trigonométricas:<ul><li>Hugo ha obtenido: \\(\\sin 30° + \\cos^2 60°\\)</li><li>Paco ha obtenido: \\(\\tan 45° + \\sin 30°\\)</li><li>Luis ha obtenido: \\(\\tan^2 60° + \\cos 60°\\)</li></ul>¿Quién ha obtenido el número de mayor valor?",
+    "options": [
+      {
+        "text": "Hugo"
+      },
+      {
+        "text": "Paco"
+      },
+      {
+        "text": "Luis"
+      },
+      {
+        "text": "Hugo y Paco han obtenido el número de mayor valor"
+      },
+      {
+        "text": "Paco y Luis han obtenido el número de mayor valor."
+      }
+    ],
+    "correct": 2,
+    "explanation": "Calculamos el valor de cada expresión: Hugo: \\(\\sin 30° + \\cos^2 60° = \\frac{1}{2} + (\\frac{1}{2})^2 = \\frac{1}{2} + \\frac{1}{4} = \\frac{2}{4} + \\frac{1}{4} = \\frac{3}{4} = 0.75\\). Paco: \\(\\tan 45° + \\sin 30° = 1 + \\frac{1}{2} = 1.5\\). Luis: \\(\\tan^2 60° + \\cos 60° = (\\sqrt{3})^2 + \\frac{1}{2} = 3 + \\frac{1}{2} = 3.5\\). Comparando los valores, Luis obtuvo el número mayor (3.5).",
+    "hints": [
+      "Recuerda los valores exactos de seno, coseno y tangente para los ángulos especiales de 30°, 45° y 60°.",
+      "Calcula el valor numérico de la expresión de Hugo, luego la de Paco y finalmente la de Luis. Presta atención a los términos al cuadrado.",
+      "Una vez que tengas los tres resultados numéricos, compáralos para identificar quién obtuvo el valor más alto."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "8",
+    "internalId": "q-1758490573501-0.435243047925582",
+    "id": "q-ai-cat-1758490573501-1-3"
+  },
+  {
+    "text": "En un bosque, un árbol de 6 metros perpendicular al suelo proyecta una sombra, con un ángulo de elevación de 30°. ¿Cuál es el largo de la sombra?",
+    "options": [
+      {
+        "text": "\\(3\\sqrt{3}\\) m"
+      },
+      {
+        "text": "6 m"
+      },
+      {
+        "text": "\\(12\\sqrt{3}\\) m"
+      },
+      {
+        "text": "\\(6\\sqrt{3}\\) m"
+      }
+    ],
+    "correct": 3,
+    "explanation": "La situación forma un triángulo rectángulo donde la altura del árbol (6 m) es el cateto opuesto al ángulo de elevación (30°), y el largo de la sombra es el cateto adyacente. La razón trigonométrica que relaciona estos dos catetos es la tangente. Así, \\(\\tan(30°) = \\frac{\\text{altura del árbol}}{\\text{largo de la sombra}}\\). Sustituyendo valores: \\(\\frac{\\sqrt{3}}{3} = \\frac{6}{\\text{largo de la sombra}}\\). Despejando el largo de la sombra: \\(\\text{largo de la sombra} = \\frac{6 \\cdot 3}{\\sqrt{3}} = \\frac{18}{\\sqrt{3}} = \\frac{18\\sqrt{3}}{3} = 6\\sqrt{3}\\) m.",
+    "hints": [
+      "Visualiza la situación: el árbol, su sombra y el rayo de sol forman un triángulo rectángulo. Identifica cuál es el cateto opuesto y cuál es el adyacente al ángulo de elevación.",
+      "¿Qué razón trigonométrica relaciona el cateto opuesto y el cateto adyacente de un ángulo?",
+      "Plantea la ecuación \\(\\tan(30°) = \\frac{6}{\\text{sombra}}\\). Recuerda el valor de \\(\\tan(30°)\\) y despeja la longitud de la sombra."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "9",
+    "internalId": "q-1758490573501-0.8640036304365599",
+    "id": "q-ai-cat-1758490573501-2-0"
+  },
+  {
+    "text": "Romeo se encuentra a una distancia de 4 m respecto a la base de la casa de Julieta. Si Julieta se ubica en el balcón, ¿cuál es la distancia (en metros) entre Romeo y Julieta? (Considerar a Julieta en la base del balcón y que Romeo mantiene un ángulo de visión de 60° respecto a la horizontal)",
+    "options": [
+      {
+        "text": "\\(\\frac{4\\sqrt{3}}{3}\\)"
+      },
+      {
+        "text": "\\(\\frac{8\\sqrt{3}}{3}\\)"
+      },
+      {
+        "text": "\\(\\frac{\\sqrt{3}}{3}\\)"
+      },
+      {
+        "text": "8"
+      }
+    ],
+    "correct": 3,
+    "explanation": "La distancia horizontal entre Romeo y la casa (4 m) es el cateto adyacente al ángulo de visión (60°). La distancia entre Romeo y Julieta (que es la línea de visión) es la hipotenusa del triángulo rectángulo formado. La razón trigonométrica que relaciona el cateto adyacente y la hipotenusa es el coseno. Entonces, \\(\\cos(60°) = \\frac{\\text{distancia horizontal}}{\\text{distancia Romeo-Julieta}}\\). Sustituyendo valores: \\(\\frac{1}{2} = \\frac{4}{\\text{distancia Romeo-Julieta}}\\). Despejando la distancia: \\(\\text{distancia Romeo-Julieta} = 4 \\cdot 2 = 8\\) m.",
+    "hints": [
+      "Dibuja un triángulo rectángulo que represente la situación. Identifica la distancia conocida (4 m) como el cateto adyacente y la distancia desconocida (Romeo-Julieta) como la hipotenusa.",
+      "¿Qué razón trigonométrica relaciona el cateto adyacente y la hipotenusa para el ángulo de visión?",
+      "Plantea la ecuación \\(\\cos(60°) = \\frac{4}{\\text{distancia}}\\). Recuerda el valor de \\(\\cos(60°)\\) y resuelve para la distancia."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "10",
+    "internalId": "q-1758490573501-0.8551856106207418",
+    "id": "q-ai-cat-1758490573501-2-1"
+  },
+  {
+    "text": "Un joven se tira desde lo alto de un tobogán de 10 metros de largo que forma un ángulo de 30° con la horizontal, entonces ¿cuál es la altura del tobogán (en metros)?",
+    "options": [
+      {
+        "text": "\\(\\frac{\\sqrt{10}}{2}\\)"
+      },
+      {
+        "text": "\\(\\sqrt{5}\\)"
+      },
+      {
+        "text": "\\(2\\sqrt{5}\\)"
+      },
+      {
+        "text": "\\(\\sqrt{10}\\)"
+      },
+      {
+        "text": "5"
+      }
+    ],
+    "correct": 4,
+    "explanation": "El tobogán, su altura y la base forman un triángulo rectángulo. La longitud del tobogán (10 m) es la hipotenusa, y la altura del tobogán es el cateto opuesto al ángulo de 30° con la horizontal. La razón trigonométrica que relaciona el cateto opuesto y la hipotenusa es el seno. Por lo tanto, \\(\\sin(30°) = \\frac{\\text{altura}}{\\text{longitud del tobogán}}\\). Sustituyendo valores: \\(\\frac{1}{2} = \\frac{\\text{altura}}{10}\\). Despejando la altura: \\(\\text{altura} = \\frac{10}{2} = 5\\) m.",
+    "hints": [
+      "Dibuja la situación: el tobogán es la hipotenusa. La altura es el cateto opuesto al ángulo de 30°.",
+      "¿Qué razón trigonométrica relaciona el cateto opuesto y la hipotenusa?",
+      "Usa la fórmula \\(\\sin(30°) = \\frac{\\text{altura}}{10}\\). ¿Cuál es el valor de \\(\\sin(30°)\\)?"
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "11",
+    "internalId": "q-1758490573501-0.25282195608576963",
+    "id": "q-ai-cat-1758490573501-2-2"
+  },
+  {
+    "text": "Mauricio se subió a un árbol de 3 m de alto, de modo de poder ver mejor a sus trabajadores. Si Francisco (que se encuentra a una distancia horizontal de \\(3\\sqrt{3}\\) m de Mauricio) lo mira, ¿cuál es el ángulo que produce la línea de visión de Francisco respecto a la horizontal?",
+    "options": [
+      {
+        "text": "15°"
+      },
+      {
+        "text": "30°"
+      },
+      {
+        "text": "45°"
+      },
+      {
+        "text": "60°"
+      },
+      {
+        "text": "80°"
+      }
+    ],
+    "correct": 1,
+    "explanation": "La altura del árbol (3 m) es el cateto opuesto al ángulo de visión (\\(\\theta\\)), y la distancia horizontal (\\(3\\sqrt{3}\\) m) es el cateto adyacente. La razón trigonométrica que relaciona el cateto opuesto y el cateto adyacente es la tangente. Así, \\(\\tan(\\theta) = \\frac{\\text{cateto opuesto}}{\\text{cateto adyacente}} = \\frac{3}{3\\sqrt{3}} = \\frac{1}{\\sqrt{3}}\\). Racionalizando, obtenemos \\(\\frac{\\sqrt{3}}{3}\\). El ángulo cuya tangente es \\(\\frac{\\sqrt{3}}{3}\\) es \\(30°\\).",
+    "hints": [
+      "Dibuja un triángulo rectángulo con la altura del árbol y la distancia horizontal. Identifica el cateto opuesto y el adyacente al ángulo de visión.",
+      "¿Qué razón trigonométrica se forma con el cateto opuesto y el cateto adyacente?",
+      "Calcula el valor de \\(\\tan(\\theta) = \\frac{3}{3\\sqrt{3}}\\) y determina a qué ángulo especial corresponde ese valor."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "12",
+    "internalId": "q-1758490573501-0.07187924261822753",
+    "id": "q-ai-cat-1758490573501-2-3"
+  },
+  {
+    "text": "Si \\(\\cos(\\omega) = \\frac{8}{10}\\), entonces ¿cuál es el valor de \\((\\cos^2(\\omega) – \\sin^2(\\omega))\\)?",
+    "options": [
+      {
+        "text": "\\(\\frac{12}{20}\\)"
+      },
+      {
+        "text": "\\(\\frac{20}{12}\\)"
+      },
+      {
+        "text": "\\(-\\frac{20}{12}\\)"
+      },
+      {
+        "text": "\\(-\\frac{12}{20}\\)"
+      },
+      {
+        "text": "Ninguna de las anteriores"
+      }
+    ],
+    "correct": 4,
+    "explanation": "Dado que \\(\\cos(\\omega) = \\frac{8}{10} = \\frac{4}{5}\\), entonces \\(\\cos^2(\\omega) = (\\frac{4}{5})^2 = \\frac{16}{25}\\). Usando la identidad pitagórica \\(\\sin^2(\\omega) + \\cos^2(\\omega) = 1\\), podemos encontrar \\(\\sin^2(\\omega)\\): \\(\\sin^2(\\omega) = 1 - \\cos^2(\\omega) = 1 - \\frac{16}{25} = \\frac{25-16}{25} = \\frac{9}{25}\\). Ahora, sustituimos en la expresión: \\(\\cos^2(\\omega) – \\sin^2(\\omega) = \\frac{16}{25} - \\frac{9}{25} = \\frac{7}{25}\\). Este valor no está entre las opciones A-D.",
+    "hints": [
+      "La expresión a calcular involucra \\(\\cos^2(\\omega)\\) y \\(\\sin^2(\\omega)\\). Ya tienes \\(\\cos(\\omega)\\), así que puedes calcular \\(\\cos^2(\\omega)\\) directamente.",
+      "Para encontrar \\(\\sin^2(\\omega)\\), utiliza la identidad fundamental \\(\\sin^2(\\omega) + \\cos^2(\\omega) = 1\\).",
+      "Una vez que tengas ambos valores al cuadrado, sustitúyelos en la expresión \\(\\cos^2(\\omega) – \\sin^2(\\omega)\\) y realiza la resta para obtener el resultado final."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "13",
+    "internalId": "q-1758490573501-0.5437036567413387",
+    "id": "q-ai-cat-1758490573501-3-0"
+  },
+  {
+    "text": "Si \\(\\theta\\) es un ángulo como muestra la figura. Si la circunferencia de la figura tiene un radio de valor \\(r\\), entonces ¿cuál es la abscisa del punto A?",
+    "options": [
+      {
+        "text": "\\(r \\cdot \\sin(\\theta)\\)"
+      },
+      {
+        "text": "\\(r + \\cos(\\theta)\\)"
+      },
+      {
+        "text": "\\(r \\cdot \\cos(\\theta)\\)"
+      },
+      {
+        "text": "No se puede determinar"
+      }
+    ],
+    "correct": 2,
+    "explanation": "La abscisa de un punto es su coordenada x. En una circunferencia con centro en el origen y radio \\(r\\), un punto \\((x,y)\\) que forma un ángulo \\(\\theta\\) con el eje x positivo tiene coordenadas \\(x = r \\cos(\\theta)\\) y \\(y = r \\sin(\\theta)\\). Por lo tanto, la abscisa del punto A es \\(r \\cos(\\theta)\\).",
+    "hints": [
+      "Recuerda que la 'abscisa' se refiere a la coordenada horizontal (eje x) de un punto.",
+      "Imagina un triángulo rectángulo formado por el radio (hipotenusa), la abscisa (cateto adyacente al ángulo \\(\\theta\\)) y la ordenada (cateto opuesto).",
+      "¿Qué razón trigonométrica relaciona el cateto adyacente, la hipotenusa y el ángulo \\(\\theta\\)? Úsala para despejar la abscisa \\(x\\)."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "14",
+    "internalId": "q-1758490573501-0.7654799945940209",
+    "diagram": {
+      "type": "raster",
+      "src": "images/1758491807114-nybgujimosk-Screenshot_20250921_185427.png",
+      "filename": "Screenshot_20250921_185427.png"
+    },
+    "id": "q-ai-cat-1758490573501-3-1"
+  },
+  {
+    "text": "Los lados de un triángulo rectángulo miden p, q y r, conociendo que \\(p < q < r\\). ¿Cuál es el valor de coseno del ángulo agudo mayor?",
+    "options": [
+      {
+        "text": "\\(\\frac{p}{q}\\)"
+      },
+      {
+        "text": "\\(\\frac{q}{r}\\)"
+      },
+      {
+        "text": "\\(\\frac{p}{\\sqrt{p+q}}\\)"
+      },
+      {
+        "text": "\\(\\frac{p}{p^2+q^2}\\)"
+      },
+      {
+        "text": "\\(\\frac{p}{\\sqrt{p^2+q^2}}\\)"
+      }
+    ],
+    "correct": 4,
+    "explanation": "En un triángulo rectángulo, el lado más largo \\(r\\) es siempre la hipotenusa. Los otros dos lados, \\(p\\) y \\(q\\), son los catetos. El ángulo agudo mayor es el que se opone al cateto de mayor longitud. Dado que \\(p < q\\), el cateto más largo es \\(q\\), por lo que el ángulo agudo mayor es el opuesto a \\(q\\). Para este ángulo, el cateto adyacente es \\(p\\) y la hipotenusa es \\(r\\). El coseno de este ángulo es \\(\\frac{\\text{cateto adyacente}}{\\text{hipotenusa}} = \\frac{p}{r}\\). Por el Teorema de Pitágoras, \\(r = \\sqrt{p^2+q^2}\\). Por lo tanto, el coseno del ángulo agudo mayor es \\(\\frac{p}{\\sqrt{p^2+q^2}}\\\\).",
+    "hints": [
+      "En cualquier triángulo, el ángulo mayor siempre se opone al lado más largo. En un triángulo rectángulo, ¿cuál de los lados \\(p\\) o \\(q\\) es el más largo y, por lo tanto, se opone al ángulo agudo mayor?",
+      "Identifica cuál de los lados \\(p\\) o \\(q\\) es el cateto adyacente al ángulo agudo mayor que acabas de identificar. Recuerda que la hipotenusa es \\(r\\).",
+      "Aplica la definición del coseno (\\[\\frac{\\text{Cateto Adyacente}}{\\text{Hipotenusa}}\\]) y usa el Teorema de Pitágoras para expresar la hipotenusa \\(r\\) en términos de \\(p\\) y \\(q\\)."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "15",
+    "internalId": "q-1758490573501-0.8811860754689743",
+    "id": "q-ai-cat-1758490573501-3-2"
+  },
+  {
+    "text": "Desde la cima del edificio Costanera Center se observa la parte superior de una catedral de 40 m de altura, con un ángulo de depresión de 30°. Si la catedral se ubica a 90 m de distancia del edificio Costanera Center, ¿cuál es la altura del edificio?",
+    "options": [
+      {
+        "text": "\\((30\\sqrt{3} + 40)\\) m"
+      },
+      {
+        "text": "\\((30\\sqrt{3})\\) m"
+      },
+      {
+        "text": "\\((30\\sqrt{3} - 40)\\) m"
+      },
+      {
+        "text": "\\((30 + \\sqrt{3})\\) m"
+      },
+      {
+        "text": "\\((30 - \\sqrt{3})\\) m"
+      }
+    ],
+    "correct": 0,
+    "explanation": "Dibuja un diagrama. La distancia horizontal entre los edificios es de 90 m. El ángulo de depresión desde la cima del Costanera Center hasta la cima de la catedral es de 30°. Esto forma un triángulo rectángulo donde la distancia horizontal es el cateto adyacente y la diferencia de altura (\\(h'\\)) entre las cimas es el cateto opuesto. Usamos la tangente: \\(\\tan(30°) = \\frac{h'}{90}\\). \\(\\frac{\\sqrt{3}}{3} = \\frac{h'}{90} \\Rightarrow h' = \\frac{90\\sqrt{3}}{3} = 30\\sqrt{3}\\) m. La altura total del Costanera Center es la altura de la catedral más esta diferencia de altura: \\(H_{\\text{Costanera}} = H_{\\text{catedral}} + h' = 40 + 30\\sqrt{3}\\) m.",
+    "hints": [
+      "Dibuja un esquema de la situación. Identifica los dos edificios y la distancia horizontal entre ellos. Traza una línea horizontal desde la cima del Costanera Center.",
+      "El ángulo de depresión de 30° desde el Costanera hasta la cima de la catedral forma un triángulo rectángulo. ¿Cuál es el cateto opuesto y el cateto adyacente a este ángulo en ese triángulo?",
+      "Usa la tangente del ángulo de 30° con la distancia horizontal (90 m) para calcular la diferencia de altura entre las cimas de los dos edificios. Luego, suma la altura de la catedral a esta diferencia para obtener la altura total del Costanera Center."
+    ],
+    "sourceFileName": "Text Input",
+    "originalQuestionNumber": "16",
+    "internalId": "q-1758490573501-0.7539474816163766",
+    "id": "q-ai-cat-1758490573501-3-3"
+  }
+];
+        const categories = [
+  {
+    "id": "ai-cat-1758490573501-0",
+    "title": "Nivel Básico",
+    "description": "<p>En este nivel, el objetivo es consolidar las definiciones fundamentales de las razones trigonométricas en triángulos rectángulos y la aplicación del Teorema de Pitágoras.</p><ul><li>Un <strong>Triángulo Rectángulo</strong> es aquel que posee un ángulo de 90°. Los lados que forman el ángulo recto se denominan <strong>catetos</strong>, y el lado opuesto al ángulo recto es la <strong>hipotenusa</strong>.</li><li>Las <strong>Razones Trigonométricas</strong> para un ángulo agudo \\(\\alpha\\) en un triángulo rectángulo se definen como:<ul><li><strong>Seno:</strong> \\(\\sin(\\alpha) = \\frac{\\text{Cateto Opuesto}}{\\text{Hipotenusa}}\\)</li><li><strong>Coseno:</strong> \\(\\cos(\\alpha) = \\frac{\\text{Cateto Adyacente}}{\\text{Hipotenusa}}\\)</li><li><strong>Tangente:</strong> \\(\\tan(\\alpha) = \\frac{\\text{Cateto Opuesto}}{\\text{Cateto Adyacente}}\\)</li></ul></li><li>El <strong>Teorema de Pitágoras</strong> establece que, en un triángulo rectángulo, la suma de los cuadrados de los catetos es igual al cuadrado de la hipotenusa: \\(a^2 + b^2 = c^2\\).</li></ul>",
+    "summaryKey": "ai-cat-1758490573501-0",
+    "problem_ids": [
+      "q-ai-cat-1758490573501-0-0",
+      "q-ai-cat-1758490573501-0-1",
+      "q-ai-cat-1758490573501-0-2",
+      "q-ai-cat-1758490573501-0-3"
+    ]
+  },
+  {
+    "id": "ai-cat-1758490573501-1",
+    "title": "Nivel Intermedio",
+    "description": "<p>Este nivel se enfoca en la aplicación de las identidades trigonométricas fundamentales y el manejo de los valores de las razones trigonométricas para ángulos especiales.</p><ul><li>La <strong>Identidad Pitagórica Fundamental</strong> es crucial: Para cualquier ángulo \\(\\alpha\\), se cumple que \\(\\sin^2(\\alpha) + \\cos^2(\\alpha) = 1\\).</li><li>Es esencial conocer los valores de las <strong>Razones Trigonométricas para Ángulos Especiales</strong>:<table><thead><tr><th>Ángulo</th><th>\\(\\sin(\\theta)\\)</th><th>\\(\\cos(\\theta)\\)</th><th>\\(\\tan(\\theta)\\)</th></tr></thead><tbody><tr><td>30°</td><td>\\(\\frac{1}{2}\\)</td><td>\\(\\frac{\\sqrt{3}}{2}\\)</td><td>\\(\\frac{\\sqrt{3}}{3}\\)</td></tr><tr><td>45°</td><td>\\(\\frac{\\sqrt{2}}{2}\\)</td><td>\\(\\frac{\\sqrt{2}}{2}\\)</td><td>1</td></tr><tr><td>60°</td><td>\\(\\frac{\\sqrt{3}}{2}\\)</td><td>\\(\\frac{1}{2}\\)</td><td>\\(\\sqrt{3}\\)</td></tr></tbody></table></li><li>La <strong>Relación entre Seno y Coseno de Ángulos Complementarios</strong> establece que si \\(\\alpha + \\beta = 90°\\), entonces \\(\\sin(\\alpha) = \\cos(\\beta)\\) y \\(\\cos(\\alpha) = \\sin(\\beta)\\).</li></ul>",
+    "summaryKey": "ai-cat-1758490573501-1",
+    "problem_ids": [
+      "q-ai-cat-1758490573501-1-0",
+      "q-ai-cat-1758490573501-1-1",
+      "q-ai-cat-1758490573501-1-2",
+      "q-ai-cat-1758490573501-1-3"
+    ]
+  },
+  {
+    "id": "ai-cat-1758490573501-2",
+    "title": "Nivel Avanzado",
+    "description": "<p>En este nivel, aplicarás la trigonometría para resolver problemas contextualizados, construyendo modelos matemáticos a partir de situaciones reales.</p><ul><li>Un <strong>Ángulo de Elevación</strong> se forma entre la línea horizontal y la línea de visión cuando un observador mira un objeto que está <strong>por encima</strong> de su posición.</li><li>Un <strong>Ángulo de Depresión</strong> se forma entre la línea horizontal y la línea de visión cuando un observador mira un objeto que está <strong>por debajo</strong> de su posición.</li><li>La <strong>Resolución de Problemas</strong> en este contexto implica:<ul><li>Leer cuidadosamente el enunciado y visualizar la situación.</li><li>Dibujar un diagrama que represente la situación, identificando el triángulo(s) rectángulo(s).</li><li>Etiquetar los lados conocidos y desconocidos, así como los ángulos.</li><li>Aplicar las razones trigonométricas adecuadas para establecer ecuaciones y resolver las incógnitas.</li></ul></li></ul>",
+    "summaryKey": "ai-cat-1758490573501-2",
+    "problem_ids": [
+      "q-ai-cat-1758490573501-2-0",
+      "q-ai-cat-1758490573501-2-1",
+      "q-ai-cat-1758490573501-2-2",
+      "q-ai-cat-1758490573501-2-3"
+    ]
+  },
+  {
+    "id": "ai-cat-1758490573501-3",
+    "title": "Nivel Experto",
+    "description": "<p>Los problemas de este nivel requieren una síntesis de múltiples conceptos trigonométricos, un mayor nivel de abstracción y la habilidad para analizar escenarios geométricos complejos.</p><ul><li>La <strong>Trigonometría en el Círculo Unitario</strong> es fundamental: Para un punto \\((x, y)\\) en una circunferencia de radio \\(r\\) que forma un ángulo \\(\\theta\\) con el eje x positivo, sus coordenadas se definen como \\(x = r \\cos(\\theta)\\) y \\(y = r \\sin(\\theta)\\).</li><li>Las <strong>Identidades de Ángulo Doble</strong> pueden ser útiles en ciertos contextos, por ejemplo: \\(\\cos(2\\omega) = \\cos^2(\\omega) - \\sin^2(\\omega)\\).</li><li>La <strong>Resolución de Sistemas de Ecuaciones Trigonométricas</strong> puede ser necesaria cuando hay múltiples incógnitas o relaciones entre ángulos.</li><li>El <strong>Análisis Abstracto</strong> implica trabajar con variables y expresiones generales, en lugar de solo valores numéricos, para derivar soluciones.</li></ul>",
+    "summaryKey": "ai-cat-1758490573501-3",
+    "problem_ids": [
+      "q-ai-cat-1758490573501-3-0",
+      "q-ai-cat-1758490573501-3-1",
+      "q-ai-cat-1758490573501-3-2",
+      "q-ai-cat-1758490573501-3-3"
+    ]
+  }
+];
+
+        const problemsById = {};
+        allProblemsData.forEach(p => { problemsById[p.id] = p; });
+        
+        let currentQuizProblems = [];
+        let currentCategory = null;
+        let completedCategories = JSON.parse(localStorage.getItem('completedQuizCategories')) || {};
+        let currentProblemIndex = 0;
+        let score = 0;
+        
+        const categorySelectionScreen = document.getElementById('category-selection-screen');
+        const categoryListEl = document.getElementById('category-list');
+        const overallProgressContainer = document.getElementById('overall-progress-container');
+        const overallScoreEl = document.getElementById('overall-score');
+        const showFinalResultsBtn = document.getElementById('show-final-results-btn');
+        const quizWrapperEl = document.getElementById('quiz-wrapper');
+        const summaryContainerEl = document.getElementById('summary-container');
+        const summaryContinueBtn = document.getElementById('summary-continue-btn');
+        const quizContainerEl = document.getElementById('quiz-container');
+        const headerEl = document.getElementById('problem-header');
+        const questionEl = document.getElementById('question-container');
+        const graphEl = document.getElementById('graph-container');
+        const optionsEl = document.getElementById('options-container');
+        const hintsEl = document.getElementById('hints-container');
+        const feedbackEl = document.getElementById('feedback-container');
+        const nextButton = document.getElementById('next-button');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreCounterEl = document.getElementById('score-counter');
+        const finalScreenEl = document.getElementById('final-screen');
+        const backToMenuBtn = document.getElementById('back-to-menu-btn');
+
+        function renderCategoryScreen() {
+            categoryListEl.innerHTML = '';
+            let totalCompleted = 0;
+            let totalPossibleScore = 0;
+            let totalUserScore = 0;
+
+            categories.forEach(cat => {
+                const li = document.createElement('li');
+                li.className = 'category-item';
+                li.dataset.categoryId = cat.id;
+                
+                const catProgress = completedCategories[cat.id];
+                let progressHTML = '';
+                if(catProgress) {
+                    li.classList.add('completed');
+                    if (catProgress.total > 0) {
+                        progressHTML = `<div class="progress-info">Completado: ${catProgress.score}/${catProgress.total}</div>`;
+                    }
+                    totalCompleted++;
+                    totalUserScore += catProgress.score;
+                    totalPossibleScore += cat.problem_ids.length;
+                }
+
+                li.innerHTML = `<h3>${cat.title}</h3><p>${cat.description.replace(/<[^>]*>?/gm, '').substring(0, 100)}...</p>${progressHTML}`;
+                li.onclick = () => {
+                    if (!li.classList.contains('completed')) {
+                        startCategory(cat.id);
+                    }
+                };
+                categoryListEl.appendChild(li);
+            });
+
+            if (Object.keys(completedCategories).length > 0) {
+                overallProgressContainer.classList.remove('hidden');
+                overallScoreEl.textContent = `Puntaje total: ${totalUserScore} de ${totalPossibleScore} correctas. Secciones completadas: ${totalCompleted} de ${categories.length}.`;
+            } else {
+                 overallProgressContainer.classList.add('hidden');
+            }
+
+            if (totalCompleted === categories.length && categories.length > 0) {
+                showFinalResultsBtn.classList.remove('hidden');
+            } else {
+                showFinalResultsBtn.classList.add('hidden');
+            }
+
+            quizWrapperEl.classList.add('hidden');
+            categorySelectionScreen.classList.remove('hidden');
+        }
+
+        function startCategory(categoryId) {
+            currentCategory = categories.find(c => c.id === categoryId);
+            if (!currentCategory) return;
+            
+            categorySelectionScreen.classList.add('hidden');
+            quizWrapperEl.classList.remove('hidden');
+
+            currentQuizProblems = currentCategory.problem_ids.map(id => problemsById[id]);
+            currentProblemIndex = 0;
+            score = 0;
+            
+            showSummary(currentCategory.id);
+        }
+
+        function showSummary(summaryKey) {
+            const summary = summaries[summaryKey];
+            if (!summary) {
+                 summaryContinueBtn.onclick(); return;
+            }
+            
+            const summaryTitleEl = document.getElementById('summary-title');
+            const keyConceptsEl = document.getElementById('summary-key-concepts');
+            const tipsListEl = document.getElementById('summary-tips-list');
+    
+            summaryTitleEl.textContent = `Preparación para: ${summary.title}`;
+            keyConceptsEl.innerHTML = summary.key_concepts_html;
+            
+            tipsListEl.innerHTML = '';
+            summary.tips.forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                tipsListEl.appendChild(li);
+            });
+            
+            renderMath();
+            quizContainerEl.classList.add('hidden');
+            finalScreenEl.classList.add('hidden');
+            summaryContainerEl.classList.remove('hidden');
+        }
+
+        summaryContinueBtn.onclick = () => {
+            summaryContainerEl.classList.add('hidden');
+            if (currentQuizProblems && currentQuizProblems.length > 0) {
+                quizContainerEl.classList.remove('hidden');
+                renderProblem(currentProblemIndex);
+            } else {
+                endOfCategory();
+            }
+        };
+        
+        function renderProblem(index) {
+            optionsEl.innerHTML = '';
+            hintsEl.innerHTML = '';
+            feedbackEl.style.display = 'none';
+            nextButton.classList.remove('visible');
+            graphEl.innerHTML = '';
+            optionsEl.className = '';
+
+            const problem = currentQuizProblems[index];
+            if (!problem) {
+                console.error("Could not find problem for index:", index, "in category:", currentCategory.title);
+                questionEl.innerHTML = "Error: No se pudo cargar la pregunta. Verifique que los datos sean correctos.";
+                return;
+            }
+
+            headerEl.textContent = `Pregunta ${index + 1} de ${currentQuizProblems.length}`;
+            questionEl.innerHTML = problem.text;
+            progressBar.style.width = `${((index) / currentQuizProblems.length) * 100}%`;
+            scoreCounterEl.textContent = `✅ Puntos: ${score}`;
+            
+            if (problem.diagram) {
+                graphEl.style.display = 'block';
+                graphEl.innerHTML = renderDiagram(problem.diagram);
+            } else {
+                graphEl.style.display = 'none';
+            }
+            
+            const optionsHaveDiagrams = problem.options.some(opt => opt.diagram);
+
+            if (optionsHaveDiagrams) {
+                 optionsEl.className = 'options-grid-with-graphs';
+                 problem.options.forEach((opt, i) => createOptionBlock(opt, i));
+            } else {
+                 problem.options.forEach((opt, i) => createOptionButton(opt, i));
+            }
+
+            if (problem.hints && problem.hints.length > 0) {
+                problem.hints.forEach((hint, i) => {
+                    const button = document.createElement('button');
+                    button.className = 'hint-button';
+                    button.textContent = `💡 Revelar Pista ${i + 1}`;
+                    button.dataset.hintIndex = i;
+                    if (i > 0) {
+                        button.disabled = true;
+                    }
+                    button.onclick = (e) => {
+                        const clickedButton = e.currentTarget;
+                        const hintContent = document.createElement('div');
+                        hintContent.className = 'hint-content';
+                        hintContent.innerHTML = hint;
+                        clickedButton.replaceWith(hintContent);
+                        
+                        const nextHintButton = hintsEl.querySelector('.hint-button');
+                        if (nextHintButton) {
+                            nextHintButton.disabled = false;
+                        }
+                        renderMath();
+                    };
+                    hintsEl.appendChild(button);
+                });
+            }
+
+            renderMath();
+        }
+        
+        function createOptionButton(option, index) {
+            const button = document.createElement('button');
+            button.className = 'option-button';
+            button.dataset.index = index;
+            button.innerHTML = `<span class="label">${String.fromCharCode(65 + index)})</span> <span class="value">${option.text || ''}</span>`;
+            button.onclick = handleOptionClick;
+            optionsEl.appendChild(button);
+        }
+        
+        function createOptionBlock(option, index) {
+            const optionBlock = document.createElement('div');
+            optionBlock.className = 'option-block-graph';
+            optionBlock.dataset.index = index;
+            optionBlock.onclick = handleOptionClick;
+            let diagramHTML = option.diagram ? `<div class="option-graph-canvas-container">${renderDiagram(option.diagram)}</div>` : '';
+            optionBlock.innerHTML = `<div class="label">${String.fromCharCode(65 + index)}) ${option.text || ''}</div> ${diagramHTML}`;
+            optionsEl.appendChild(optionBlock);
+        }
+
+        function handleOptionClick(event) {
+            const problem = currentQuizProblems[currentProblemIndex];
+            const selectedIndex = parseInt(event.currentTarget.dataset.index, 10);
+            const correctIndex = problem.correct;
+            
+            const correctButton = document.querySelector(`[data-index="${correctIndex}"]`);
+            if (correctButton) correctButton.classList.add('correct');
+            
+            let isAnswerCorrect = false;
+            const selectedButton = event.currentTarget;
+            if (selectedIndex === correctIndex) {
+                score++;
+                isAnswerCorrect = true;
+            } else {
+                selectedButton.classList.add('incorrect');
+            }
+            
+            scoreCounterEl.textContent = `✅ Puntos: ${score}`;
+            document.querySelectorAll('.option-button, .option-block-graph').forEach(btn => { btn.classList.add('disabled'); btn.onclick = null; });
+            progressBar.style.width = `${((currentProblemIndex + 1) / currentQuizProblems.length) * 100}%`;
+            
+            feedbackEl.className = isAnswerCorrect ? 'feedback-container correct' : 'feedback-container incorrect';
+            const feedbackTitle = isAnswerCorrect ? `<div id="feedback-title">${icons.check} Correcto</div>` : `<div id="feedback-title">${icons.x} Incorrecto</div>`;
+            feedbackEl.innerHTML = `${feedbackTitle}${problem.explanation}`;
+            
+            renderMath();
+            feedbackEl.style.display = 'block';
+            if (currentProblemIndex < currentQuizProblems.length - 1) { nextButton.textContent = 'Siguiente →'; } 
+            else { nextButton.textContent = 'Finalizar Sección'; }
+            nextButton.classList.add('visible');
+        }
+
+        nextButton.onclick = () => {
+            currentProblemIndex++;
+            if (currentProblemIndex < currentQuizProblems.length) {
+                renderProblem(currentProblemIndex);
+            } else {
+                endOfCategory();
+            }
+        };
+        
+        function endOfCategory() {
+            completedCategories[currentCategory.id] = {
+                score: score,
+                total: currentQuizProblems.length
+            };
+            localStorage.setItem('completedQuizCategories', JSON.stringify(completedCategories));
+            
+            quizContainerEl.classList.add('hidden');
+            finalScreenEl.classList.remove('hidden');
+
+            const percentage = currentQuizProblems.length > 0 ? Math.round((score / currentQuizProblems.length) * 100) : 100;
+            document.getElementById('final-title').textContent = `Sección Completada: ${currentCategory.title}`;
+            document.getElementById('final-message').textContent = currentQuizProblems.length > 0 ? `¡Gran trabajo! Has completado esta sección.` : `¡Concepto explorado! Ahora puedes continuar con la siguiente sección.`;
+            document.getElementById('final-score').textContent = currentQuizProblems.length > 0 ? `${score} / ${currentQuizProblems.length}` : '✔';
+            const finalPercentageEl = document.getElementById('final-percentage');
+            if (currentQuizProblems.length > 0) {
+                finalPercentageEl.textContent = `(${percentage}%)`;
+                finalPercentageEl.style.color = percentage >= 60 ? 'var(--success-color)' : 'var(--danger-color)';
+            } else {
+                finalPercentageEl.textContent = '';
+            }
+            backToMenuBtn.textContent = 'Volver al Menú';
+            backToMenuBtn.onclick = () => {
+                finalScreenEl.classList.add('hidden');
+                renderCategoryScreen();
+            };
+        }
+        
+        showFinalResultsBtn.onclick = () => {
+            categorySelectionScreen.classList.add('hidden');
+            quizWrapperEl.classList.remove('hidden');
+
+            summaryContainerEl.classList.add('hidden');
+            quizContainerEl.classList.add('hidden');
+            finalScreenEl.classList.remove('hidden');
+
+            let totalScore = 0;
+            let totalProblems = 0;
+            Object.values(completedCategories).forEach(cat => {
+                totalScore += cat.score;
+                if (cat.total > 0) {
+                    totalProblems += cat.total;
+                }
+            });
+
+            const percentage = totalProblems > 0 ? Math.round((totalScore / totalProblems) * 100) : 0;
+            document.getElementById('final-title').textContent = '¡Resumen Final del Desafío!';
+            document.getElementById('final-message').textContent = '¡Felicidades! Has completado todos los temas. Este es tu rendimiento general.';
+            document.getElementById('final-score').textContent = `${totalScore} / ${totalProblems}`;
+            const finalPercentageEl = document.getElementById('final-percentage');
+            finalPercentageEl.textContent = `(${percentage}%)`;
+            finalPercentageEl.style.color = percentage >= 60 ? 'var(--success-color)' : 'var(--danger-color)';
+            
+            backToMenuBtn.textContent = 'Reiniciar Desafío';
+            backToMenuBtn.onclick = () => {
+                localStorage.removeItem('completedQuizCategories');
+                window.location.reload();
+            };
+        };
+        
+        renderCategoryScreen();
+        renderMath();
+    });
+    </script>
+</body>
+</html>
+  
